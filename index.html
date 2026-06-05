@@ -80,7 +80,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .face-def{font-size:.9rem;line-height:1.65;color:var(--txt)}
 .face-hint{margin-top:14px;font-size:.75rem;color:var(--txt2)}
 
-.fc-acts{display:flex;gap:10px;width:100%;margin-top:18px}
+.flip-btn{width:100%;margin-top:14px;padding:14px;background:var(--surf);border:1.5px dashed var(--acc);border-radius:12px;color:var(--acc2);font-size:.95rem;font-weight:700;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.flip-btn:active{background:rgba(124,58,237,.15);transform:scale(.97)}
+.fc-acts{display:flex;gap:10px;width:100%;margin-top:10px}
 .fc-btn{flex:1;padding:13px;border:none;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;transition:transform .1s}
 .fc-btn:active{transform:scale(.95)}
 .btn-no{background:rgba(239,68,68,.12);color:var(--err);border:1px solid rgba(239,68,68,.3)}
@@ -202,6 +204,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       </div>
     </div>
   </div>
+
+  <button class="flip-btn" id="flip-btn" onclick="flipFC()">👁 Ver definición</button>
 
   <div class="fc-acts" id="fc-acts" style="display:none">
     <button class="fc-btn btn-no" onclick="markFC(false)">✗ No lo sé</button>
@@ -468,12 +472,20 @@ function renderFC(){
   fcFlipped=false;
   document.getElementById('fc-card').classList.remove('flip');
   document.getElementById('fc-acts').style.display='none';
+  document.getElementById('flip-btn').style.display='block';
+  document.getElementById('flip-btn').textContent='👁 Ver definición';
 }
 
 function flipFC(){
   fcFlipped=!fcFlipped;
   document.getElementById('fc-card').classList.toggle('flip',fcFlipped);
-  if(fcFlipped) document.getElementById('fc-acts').style.display='flex';
+  if(fcFlipped){
+    document.getElementById('fc-acts').style.display='flex';
+    document.getElementById('flip-btn').textContent='↩ Ver término';
+  }else{
+    document.getElementById('fc-acts').style.display='none';
+    document.getElementById('flip-btn').textContent='👁 Ver definición';
+  }
 }
 
 function markFC(ok){
