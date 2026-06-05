@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Glosario Ética Profesional</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0d0d1a;--surf:#1a1a2e;--surf2:#16213e;
+  --acc:#7c3aed;--acc2:#a855f7;
+  --ok:#10b981;--err:#ef4444;--warn:#f59e0b;
+  --txt:#f1f5f9;--txt2:#94a3b8;--bdr:#2d3748;
+}
+/* ── LOGIN ── */
+.av-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0 20px}
+.av-btn{width:48px;height:48px;border-radius:12px;border:2px solid var(--bdr);background:var(--surf);font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.av-btn.sel{border-color:var(--acc2);background:rgba(168,85,247,.2)}
+.nm-inp{width:100%;background:var(--surf);border:1.5px solid var(--bdr);border-radius:12px;padding:14px 16px;color:var(--txt);font-size:1rem;outline:none;margin-bottom:16px;text-align:center;font-weight:600;-webkit-appearance:none}
+.nm-inp:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(124,58,237,.2)}
+.nm-inp::placeholder{color:var(--txt2);font-weight:400}
+/* ── GREETING ── */
+.greeting{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;padding:12px 16px;width:100%;display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.g-av{font-size:1.6rem;line-height:1}
+.g-txt{flex:1}
+.g-txt p{font-weight:700;font-size:.95rem}
+.g-txt span{font-size:.75rem;color:var(--txt2)}
+.chg-btn{background:none;border:1px solid var(--bdr);color:var(--txt2);font-size:.72rem;cursor:pointer;padding:5px 10px;border-radius:8px;white-space:nowrap}
+/* ── RANKING ── */
+.rank-list{width:100%;display:flex;flex-direction:column;gap:8px}
+.rank-item{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:12px}
+.rank-item.me{border-color:var(--acc);background:rgba(124,58,237,.08)}
+.rpos{width:30px;height:30px;min-width:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800}
+.p1{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.p2{background:linear-gradient(135deg,#94a3b8,#64748b)}
+.p3{background:linear-gradient(135deg,#b45309,#92400e)}
+.pn{background:var(--bdr);color:var(--txt2);font-size:.8rem}
+.rname{font-weight:700;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rmeta{font-size:.7rem;color:var(--txt2);margin-top:2px}
+.rpct{font-weight:800;font-size:1.05rem;color:var(--acc2);white-space:nowrap}
+.rbadge{font-size:.62rem;background:rgba(168,85,247,.15);color:var(--acc2);padding:2px 7px;border-radius:8px;display:inline-block;margin-top:3px}
+.rank-empty{color:var(--txt2);font-size:.9rem;text-align:center;padding:48px 0;line-height:2.2}
+.saving-msg{font-size:.8rem;color:var(--txt2);text-align:center;margin-top:8px;min-height:20px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;justify-content:center;overflow-x:hidden}
+.screen{display:none;width:100%;max-width:480px;min-height:100vh;padding:20px 16px 48px;flex-direction:column;align-items:center}
+.screen.on{display:flex;animation:fi .25s ease-out}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HOME ── */
+.logo{text-align:center;margin-bottom:32px}
+.logo h1{font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,var(--acc2),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo p{color:var(--txt2);font-size:.85rem;margin-top:6px}
+.modes{width:100%;display:flex;flex-direction:column;gap:12px}
+.mcard{background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:border-color .15s,background .15s}
+.mcard:active{background:var(--surf2);border-color:var(--acc)}
+.micon{font-size:2rem;width:52px;height:52px;display:flex;align-items:center;justify-content:center;background:rgba(124,58,237,.15);border-radius:12px;flex-shrink:0}
+.minfo h3{font-size:1rem;font-weight:700}
+.minfo p{color:var(--txt2);font-size:.78rem;margin-top:3px}
+.badge{margin-left:auto;background:rgba(168,85,247,.18);color:var(--acc2);font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+
+/* ── PROGRESS BAR ── */
+.pbar{width:100%;height:4px;background:var(--bdr);border-radius:2px;margin-bottom:20px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:2px;transition:width .3s ease}
+
+/* ── TOP NAV ── */
+.topnav{display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:14px}
+.back{background:none;border:none;color:var(--txt2);font-size:1.4rem;cursor:pointer;padding:6px 8px}
+.navlabel{font-size:.8rem;font-weight:600;color:var(--txt2);letter-spacing:.5px}
+.navscore{font-size:.9rem;font-weight:700;color:var(--acc2)}
+
+/* ── FLASHCARDS ── */
+.card-wrap{width:100%;perspective:1000px;cursor:pointer;user-select:none}
+.card-inner{width:100%;min-height:260px;position:relative;transition:transform .5s cubic-bezier(.175,.885,.32,1.275);transform-style:preserve-3d}
+.card-inner.flip{transform:rotateY(180deg)}
+.face{position:absolute;width:100%;min-height:260px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 22px;text-align:center}
+.front{background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid var(--acc)}
+.back{background:linear-gradient(135deg,#0f2027,#1a1a2e);border:2px solid var(--acc2);transform:rotateY(180deg)}
+.face-lbl{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc2);margin-bottom:14px;font-weight:700}
+.face-term{font-size:1.6rem;font-weight:800;line-height:1.2}
+.face-def{font-size:.9rem;line-height:1.65;color:var(--txt)}
+.face-hint{margin-top:14px;font-size:.75rem;color:var(--txt2)}
+
+.fc-acts{display:flex;gap:10px;width:100%;margin-top:18px}
+.fc-btn{flex:1;padding:13px;border:none;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;transition:transform .1s}
+.fc-btn:active{transform:scale(.95)}
+.btn-no{background:rgba(239,68,68,.12);color:var(--err);border:1px solid rgba(239,68,68,.3)}
+.btn-yes{background:rgba(16,185,129,.12);color:var(--ok);border:1px solid rgba(16,185,129,.3)}
+.fc-stats{margin-top:14px;display:flex;gap:20px;font-size:.8rem}
+.st-ok{color:var(--ok)} .st-err{color:var(--err)}
+
+/* ── QUIZ ── */
+.timer-wrap{width:100%;height:6px;background:var(--bdr);border-radius:3px;margin-bottom:16px;overflow:hidden;display:none}
+.timer-fill{height:100%;width:100%;border-radius:3px;transition:width 1s linear,background .5s}
+.qcard{width:100%;background:var(--surf);border:1px solid var(--bdr);border-radius:18px;padding:22px;margin-bottom:18px}
+.qlbl{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc2);margin-bottom:10px;font-weight:700}
+.qtxt{font-size:.95rem;line-height:1.65}
+.opts{width:100%;display:flex;flex-direction:column;gap:9px}
+.opt{width:100%;background:var(--surf);border:1.5px solid var(--bdr);border-radius:11px;padding:13px 14px;text-align:left;color:var(--txt);font-size:.87rem;cursor:pointer;display:flex;align-items:flex-start;gap:11px;line-height:1.45;transition:border-color .1s,background .1s}
+.opt:active:not(.done){border-color:var(--acc);background:rgba(124,58,237,.1)}
+.opt.cor{border-color:var(--ok);background:rgba(16,185,129,.1);color:var(--ok)}
+.opt.wrg{border-color:var(--err);background:rgba(239,68,68,.1);color:var(--err)}
+.opt.done{cursor:default}
+.oltr{width:26px;height:26px;min-width:26px;border-radius:7px;background:var(--bdr);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0;margin-top:1px}
+.cor .oltr{background:rgba(16,185,129,.3)} .wrg .oltr{background:rgba(239,68,68,.3)}
+.nxt{width:100%;background:linear-gradient(135deg,var(--acc),#5b21b6);color:#fff;border:none;border-radius:12px;padding:15px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:14px;display:none;transition:transform .1s}
+.nxt:active{transform:scale(.97)}
+
+/* ── RESULTS ── */
+.res-wrap{text-align:center;width:100%}
+.stars{font-size:2.2rem;letter-spacing:6px;margin-bottom:22px}
+.circle{width:140px;height:140px;border-radius:50%;margin:0 auto 22px;background:conic-gradient(var(--acc2) var(--deg,0deg),var(--bdr) 0deg);display:flex;align-items:center;justify-content:center}
+.circ-in{width:110px;height:110px;border-radius:50%;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cpct{font-size:2rem;font-weight:800}
+.clab{font-size:.72rem;color:var(--txt2)}
+.rmsg{font-size:1.25rem;font-weight:800;margin-bottom:6px}
+.rsub{color:var(--txt2);font-size:.88rem;margin-bottom:28px}
+.res-btns{display:flex;flex-direction:column;gap:10px;width:100%}
+.btn-p{background:linear-gradient(135deg,var(--acc),#5b21b6);color:#fff;border:none;border-radius:12px;padding:15px;font-size:.95rem;font-weight:700;cursor:pointer;transition:transform .1s}
+.btn-p:active{transform:scale(.97)}
+.btn-s{background:transparent;color:var(--txt2);border:1px solid var(--bdr);border-radius:12px;padding:13px;font-size:.88rem;cursor:pointer}
+.btn-s:active{opacity:.7}
+
+/* ── FC complete overlay ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:24px}
+.overlay-card{background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:28px;max-width:340px;width:100%;text-align:center}
+.overlay-card h2{font-size:1.3rem;font-weight:800;margin-bottom:8px}
+.overlay-card p{color:var(--txt2);font-size:.88rem;margin-bottom:20px;line-height:1.5}
+.ov-stats{display:flex;justify-content:center;gap:24px;margin-bottom:22px}
+.ov-stat{text-align:center}
+.ov-stat span{display:block;font-size:1.5rem;font-weight:800}
+.ov-stat label{font-size:.72rem;color:var(--txt2)}
+.ov-btns{display:flex;flex-direction:column;gap:8px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="s-login" class="screen on">
+  <div class="logo"><h1>⚖️ Glosario Ética</h1><p>Ingresá tu nombre para comenzar</p></div>
+  <div style="width:100%">
+    <p style="font-size:.82rem;color:var(--txt2);text-align:center;margin-bottom:4px">Elegí tu avatar</p>
+    <div class="av-grid" id="av-grid"></div>
+    <input id="nm-inp" class="nm-inp" type="text" placeholder="Tu nombre o apodo..." maxlength="20" autocomplete="off">
+    <button class="btn-p" style="width:100%" onclick="doLogin()">Comenzar →</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="s-home" class="screen">
+  <div class="logo"><h1>⚖️ Glosario Ética</h1><p>Ética Profesional · 24 conceptos</p></div>
+  <div class="greeting">
+    <span class="g-av" id="g-av">📚</span>
+    <div class="g-txt">
+      <p id="g-name">Hola!</p>
+      <span>¿Qué modo querés practicar?</span>
+    </div>
+    <button class="chg-btn" onclick="changePlayer()">Cambiar</button>
+  </div>
+  <div class="modes">
+    <div class="mcard" onclick="startFC()">
+      <div class="micon">🃏</div>
+      <div class="minfo"><h3>Flashcards</h3><p>Repasá cada concepto a tu ritmo · swipe para marcar</p></div>
+      <span class="badge">Estudio</span>
+    </div>
+    <div class="mcard" onclick="startQuiz('normal')">
+      <div class="micon">🎯</div>
+      <div class="minfo"><h3>Quiz</h3><p>Opción múltiple · mezcla de término y definición</p></div>
+      <span class="badge">24 pregs</span>
+    </div>
+    <div class="mcard" onclick="startQuiz('speed')">
+      <div class="micon">⚡</div>
+      <div class="minfo"><h3>Contra el tiempo</h3><p>30 seg por pregunta · puntos extra por velocidad</p></div>
+      <span class="badge">Timer</span>
+    </div>
+    <div class="mcard" onclick="openRanking()">
+      <div class="micon">🏆</div>
+      <div class="minfo"><h3>Ranking</h3><p>Los mejores puntajes del curso</p></div>
+      <span class="badge">TOP 10</span>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARDS -->
+<div id="s-fc" class="screen">
+  <div class="topnav">
+    <button class="back" onclick="goHome()">←</button>
+    <span class="navlabel" id="fc-num">1 / 24</span>
+    <button class="back" onclick="shuffleFC()" title="Mezclar">🔀</button>
+  </div>
+  <div class="pbar"><div class="pfill" id="fc-prog" style="width:4%"></div></div>
+
+  <div class="card-wrap" id="fc-wrap">
+    <div class="card-inner" id="fc-card">
+      <div class="face front">
+        <div class="face-lbl">Término</div>
+        <div class="face-term" id="fc-term">—</div>
+        <div class="face-hint">Tocá para ver la definición</div>
+      </div>
+      <div class="face back">
+        <div class="face-lbl">Definición</div>
+        <div class="face-def" id="fc-def">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-acts" id="fc-acts" style="display:none">
+    <button class="fc-btn btn-no" onclick="markFC(false)">✗ No lo sé</button>
+    <button class="fc-btn btn-yes" onclick="markFC(true)">✓ Lo sé</button>
+  </div>
+  <div class="fc-stats">
+    <span class="st-ok">✓ <span id="fc-ok">0</span> sabidos</span>
+    <span class="st-err">✗ <span id="fc-bad">0</span> para repasar</span>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="s-quiz" class="screen">
+  <div class="topnav">
+    <button class="back" onclick="goHome()">←</button>
+    <span class="navlabel" id="q-num">Pregunta 1 de 24</span>
+    <span class="navscore" id="q-score">0 pts</span>
+  </div>
+  <div class="pbar"><div class="pfill" id="q-prog" style="width:4%"></div></div>
+  <div class="timer-wrap" id="timer-wrap"><div class="timer-fill" id="timer-fill"></div></div>
+
+  <div class="qcard">
+    <div class="qlbl" id="q-lbl">¿Cuál es el término?</div>
+    <div class="qtxt" id="q-txt">—</div>
+  </div>
+
+  <div class="opts" id="opts"></div>
+  <button class="nxt" id="nxt" onclick="nextQ()">Siguiente →</button>
+</div>
+
+<!-- RESULTS -->
+<div id="s-res" class="screen">
+  <div class="res-wrap">
+    <div class="logo" style="margin-bottom:20px"><h1>⚖️ Resultado</h1></div>
+    <div class="stars" id="r-stars">⭐⭐⭐</div>
+    <div class="circle" id="r-circle">
+      <div class="circ-in">
+        <span class="cpct" id="r-pct">0%</span>
+        <span class="clab" id="r-frac">0/24</span>
+      </div>
+    </div>
+    <div class="rmsg" id="r-msg">¡Brillante!</div>
+    <div class="rsub" id="r-sub">Dominás el glosario</div>
+    <div class="saving-msg" id="saving-msg"></div>
+    <div class="res-btns">
+      <button class="btn-p" onclick="openRanking()">🏆 Ver Ranking</button>
+      <button class="btn-p" style="background:linear-gradient(135deg,#059669,#047857)" onclick="retryQuiz()">🔄 Intentar de nuevo</button>
+      <button class="btn-s" onclick="startFC()">🃏 Repasar Flashcards</button>
+      <button class="btn-s" onclick="goHome()">🏠 Inicio</button>
+    </div>
+  </div>
+</div>
+
+<!-- RANKING -->
+<div id="s-rank" class="screen">
+  <div class="topnav">
+    <button class="back" onclick="goHome()">←</button>
+    <span class="navlabel">🏆 Ranking del curso</span>
+    <button class="back" onclick="loadRanking()" title="Actualizar">🔄</button>
+  </div>
+  <div class="rank-list" id="rank-list">
+    <div class="rank-empty">⏳ Cargando...</div>
+  </div>
+</div>
+
+<!-- FC complete overlay -->
+<div id="overlay" class="overlay" style="display:none">
+  <div class="overlay-card">
+    <h2 id="ov-title">¡Completado!</h2>
+    <p id="ov-msg">Terminaste todas las flashcards.</p>
+    <div class="ov-stats">
+      <div class="ov-stat"><span class="st-ok" id="ov-ok">0</span><label>Sabidos</label></div>
+      <div class="ov-stat"><span style="color:var(--txt2)" id="ov-tot">24</span><label>Total</label></div>
+      <div class="ov-stat"><span class="st-err" id="ov-bad">0</span><label>A repasar</label></div>
+    </div>
+    <div class="ov-btns">
+      <button class="btn-p" onclick="replayBad()">🔁 Solo los que no supe</button>
+      <button class="btn-s" onclick="hideOverlay()">🏠 Inicio</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── FIREBASE CONFIG ──────────────────────────────────────────────────
+// Pegá acá la URL de tu Firebase Realtime Database (sin barra al final)
+// Ej: https://mi-proyecto-default-rtdb.firebaseio.com
+const FB_URL = 'https://juegoeticaglosario-default-rtdb.firebaseio.com';
+// ────────────────────────────────────────────────────────────────────
+
+const G=[
+  {t:"Derechos Humanos",d:"Derechos de los que gozan todas las personas por el solo hecho de serlo, sin distinción alguna. Consenso de la comunidad internacional sobre los derechos inherentes a la dignidad humana, sin distinción de raza, sexo, idioma o religión."},
+  {t:"Ethos",d:"Conjunto de actitudes, convicciones y creencias morales de una persona o de un grupo social o étnico. Hace alusión a lo propio, lo íntimo: aquello de donde salen los propios actos, la fuente de tales actos."},
+  {t:"Ética",d:"Rama de la filosofía que se centra en la reflexión y análisis crítico de los principios que guían el comportamiento humano. A diferencia de la moral (práctica), la ética es teórica y se ocupa de los fundamentos de las normas morales."},
+  {t:"Ética aplicada",d:"Conjunto de principios, leyes, normas y reglas establecidas por una comunidad de profesionales que rigen la conducta moral de sus miembros. Es la ética centrada en campos concretos de la actividad humana."},
+  {t:"Ética profesional",d:"Conjunto sistemático de principios, leyes, normas y reglas establecidas por una comunidad de profesionales agremiados, que rigen la conducta moral de sus miembros en el ámbito del trabajo, en pos del bien para la sociedad."},
+  {t:"Equidad",d:"Que cada uno reciba lo que le corresponde o necesita. No es sinónimo de igualdad."},
+  {t:"Filosofía",d:"Rama que estudia el por qué y para qué de las cosas, generalmente el comportamiento humano."},
+  {t:"Justicia",d:"Idea de equidad, imparcialidad y rectitud en la aplicación de las normas y leyes que rigen una sociedad."},
+  {t:"Imperativo categórico",d:"Ley moral universal y racional propuesta por Kant que funciona como una orden absoluta basada en el sentido del deber. Establece lo que debe hacerse y lo que no, según la ley moral que está en la razón de cada ser humano."},
+  {t:"Libertad",d:"Derecho de uno mismo, como ser humano, a vivir, pensar y expresarse sin interferir en lo que hace el otro."},
+  {t:"Metaética",d:"Análisis lingüístico del significado y uso de los términos morales como 'bueno', 'malo' y 'justo'. Adopta una posición neutral y es ejercida principalmente por filósofos profesionales."},
+  {t:"Modernidad",d:"Proceso cultural basado en la fe en la razón, el progreso a través de la ciencia y la tecnología, y la búsqueda de verdades universales y 'grandes relatos'."},
+  {t:"Moral",d:"Conjunto de principios, normas y valores que rigen el comportamiento de las personas en una sociedad. Puede incluir normas sobre la honestidad, el respeto y la justicia."},
+  {t:"Posmodernidad",d:"Proceso que se opone a los principios de la modernidad, considerando que su proyecto fracasó. Movimiento filosófico que cuestiona las nociones de verdad, realidad y progreso, centrándose en la diversidad y la ambigüedad."},
+  {t:"Principio de autonomía",d:"No interferencia de unos en las vidas, acciones y decisiones de los otros, salvo aquellas interferencias que sean expresamente deseadas o aceptadas por ellos."},
+  {t:"Principio de beneficencia",d:"Hacer bien una actividad y hacer el bien a otros mediante la actividad bien hecha."},
+  {t:"Principio de justicia",d:"El sentido social de la profesión y las obligaciones de justicia de cada colectivo profesional para contribuir al bien público de la sociedad en que se tienen responsabilidades profesionales."},
+  {t:"Principio de no maleficencia",d:"Ante todo, no hacer daño."},
+  {t:"Principios éticos",d:"Imperativos de tipo general que orientan acerca de lo que hay de bueno y realizable en unas acciones, y de malo y evitable en otras."},
+  {t:"Responsabilidad",d:"Obligación de responder por nuestras acciones y decisiones. Implica ser consciente de las consecuencias de los propios actos y estar dispuesto a asumir esas consecuencias."},
+  {t:"Responsabilidad social",d:"Compromiso voluntario de una empresa para gestionar sus operaciones de manera ética, minimizando su impacto ambiental y contribuyendo al comercio sin deshumanizar a los empleados."},
+  {t:"Utilitarismo",d:"Filosofía que considera que es bueno aquello que es útil para un mayor número de personas."},
+  {t:"Valores",d:"Principios, virtudes o normas que guían el comportamiento de las personas y orientan sus decisiones."},
+  {t:"Virtud",d:"Para Aristóteles, la capacidad de identificar y elegir el justo medio entre dos extremos viciosos (el exceso y el defecto), adquirida mediante la educación y el hábito."}
+];
+
+// ── PLAYER ──
+const AVATARS=['🦁','🐯','🦊','🐺','🦄','🐸','🤖','👾','🎭','📚','🎓','⚡','🌟','🔥','🧠'];
+let playerName='',playerAvatar='📚';
+
+window.addEventListener('DOMContentLoaded',()=>{
+  // Render avatar grid
+  const grid=document.getElementById('av-grid');
+  grid.innerHTML=AVATARS.map((av,i)=>
+    `<button class="av-btn${i===4?' sel':''}" onclick="selAv(this,'${av}')">${av}</button>`
+  ).join('');
+  playerAvatar=AVATARS[4];
+
+  // Auto-login si hay datos guardados
+  const saved=localStorage.getItem('etica_player');
+  if(saved){
+    try{
+      const p=JSON.parse(saved);
+      playerName=p.name;playerAvatar=p.avatar||AVATARS[4];
+      updateGreeting();show('s-home');
+    }catch{show('s-login');}
+  }else{show('s-login');}
+});
+
+function selAv(btn,av){
+  document.querySelectorAll('.av-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  playerAvatar=av;
+}
+
+function doLogin(){
+  const name=document.getElementById('nm-inp').value.trim();
+  if(!name){document.getElementById('nm-inp').focus();return;}
+  playerName=name;
+  localStorage.setItem('etica_player',JSON.stringify({name,avatar:playerAvatar}));
+  updateGreeting();show('s-home');
+}
+
+function changePlayer(){
+  document.getElementById('nm-inp').value=playerName;
+  show('s-login');
+}
+
+function updateGreeting(){
+  document.getElementById('g-av').textContent=playerAvatar;
+  document.getElementById('g-name').textContent='Hola, '+playerName+'!';
+}
+
+// ── NAV ──
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function goHome(){clearTimer();show('s-home')}
+
+// ── RANKING ──
+async function saveScore(pct,rawScore,mode){
+  const entry={
+    name:playerName,avatar:playerAvatar,
+    pct,score:rawScore,mode,
+    date:new Date().toLocaleDateString('es-AR')
+  };
+  if(FB_URL){
+    try{
+      await fetch(FB_URL+'/scores.json',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(entry)
+      });
+      document.getElementById('saving-msg').textContent='✓ Puntaje guardado en el ranking';
+    }catch(e){
+      document.getElementById('saving-msg').textContent='⚠ No se pudo guardar online';
+    }
+  }else{
+    const arr=JSON.parse(localStorage.getItem('etica_scores')||'[]');
+    arr.push(entry);
+    localStorage.setItem('etica_scores',JSON.stringify(arr.slice(-200)));
+    document.getElementById('saving-msg').textContent='✓ Puntaje guardado localmente';
+  }
+}
+
+function openRanking(){show('s-rank');loadRanking()}
+
+async function loadRanking(){
+  const list=document.getElementById('rank-list');
+  list.innerHTML='<div class="rank-empty">⏳ Cargando...</div>';
+  let entries=[];
+  if(FB_URL){
+    try{
+      const res=await fetch(FB_URL+'/scores.json');
+      const data=await res.json();
+      if(data)entries=Object.values(data);
+    }catch{
+      entries=JSON.parse(localStorage.getItem('etica_scores')||'[]');
+    }
+  }else{
+    entries=JSON.parse(localStorage.getItem('etica_scores')||'[]');
+  }
+  entries.sort((a,b)=>b.pct-a.pct||b.score-a.score);
+  const top=entries.slice(0,10);
+  if(!top.length){
+    list.innerHTML='<div class="rank-empty">🎯 Todavía no hay puntajes<br>¡Sé el primero en jugar!</div>';
+    return;
+  }
+  const medals=['🥇','🥈','🥉'];
+  const pcls=['p1','p2','p3'];
+  list.innerHTML=top.map((e,i)=>{
+    const isMe=e.name===playerName&&e.avatar===playerAvatar;
+    return`<div class="rank-item${isMe?' me':''}">
+      <div class="rpos ${i<3?pcls[i]:'pn'}">${i<3?medals[i]:i+1}</div>
+      <div style="flex:1;min-width:0">
+        <div class="rname">${e.avatar||''} ${esc(e.name)}${isMe?' <small style="color:var(--acc2)">(vos)</small>':''}</div>
+        <div class="rmeta">${e.date}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="rpct">${e.pct}%</div>
+        <div class="rbadge">${e.mode==='speed'?'⚡ Tiempo':'🎯 Quiz'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── FLASHCARDS ──
+let fcCards=[],fcIdx=0,fcOk=0,fcBad=0,fcFlipped=false,fcBadCards=[];
+let tsX=0,tsY=0;
+
+function startFC(cards){
+  fcCards=cards?cards:[...G];
+  fcIdx=0;fcOk=0;fcBad=0;fcBadCards=[];
+  renderFC();
+  show('s-fc');
+}
+
+function shuffleFC(){
+  fcCards=arr(fcCards);fcIdx=0;fcOk=0;fcBad=0;
+  renderFC();
+}
+
+function arr(a){return [...a].sort(()=>Math.random()-.5)}
+
+function renderFC(){
+  const c=fcCards[fcIdx];
+  document.getElementById('fc-term').textContent=c.t;
+  document.getElementById('fc-def').textContent=c.d;
+  document.getElementById('fc-num').textContent=`${fcIdx+1} / ${fcCards.length}`;
+  document.getElementById('fc-prog').style.width=((fcIdx+1)/fcCards.length*100)+'%';
+  document.getElementById('fc-ok').textContent=fcOk;
+  document.getElementById('fc-bad').textContent=fcBad;
+  fcFlipped=false;
+  document.getElementById('fc-card').classList.remove('flip');
+  document.getElementById('fc-acts').style.display='none';
+}
+
+function flipFC(){
+  fcFlipped=!fcFlipped;
+  document.getElementById('fc-card').classList.toggle('flip',fcFlipped);
+  if(fcFlipped) document.getElementById('fc-acts').style.display='flex';
+}
+
+function markFC(ok){
+  if(ok) fcOk++; else {fcBad++;fcBadCards.push(fcCards[fcIdx]);}
+  if(fcIdx<fcCards.length-1){fcIdx++;renderFC();}
+  else showFCDone();
+}
+
+function showFCDone(){
+  document.getElementById('ov-ok').textContent=fcOk;
+  document.getElementById('ov-bad').textContent=fcBad;
+  document.getElementById('ov-tot').textContent=fcCards.length;
+  const pct=Math.round(fcOk/fcCards.length*100);
+  document.getElementById('ov-title').textContent=pct>=80?'¡Excelente! 🎉':pct>=50?'¡Bien hecho! 👏':'Seguí practicando 💪';
+  document.getElementById('ov-msg').textContent=`Completaste las ${fcCards.length} flashcards con un ${pct}% de aciertos.`;
+  document.querySelector('#overlay .btn-p').style.display=fcBadCards.length?'block':'none';
+  document.getElementById('overlay').style.display='flex';
+}
+
+function hideOverlay(){document.getElementById('overlay').style.display='none';goHome()}
+function replayBad(){
+  document.getElementById('overlay').style.display='none';
+  startFC(fcBadCards);
+}
+
+// Interacción unificada: tap para girar, swipe horizontal para marcar
+(function(){
+  const w=document.getElementById('fc-wrap');
+  let sx=0,sy=0,moved=false,lastTap=0;
+
+  w.addEventListener('touchstart',e=>{
+    sx=e.touches[0].clientX;sy=e.touches[0].clientY;moved=false;
+  },{passive:true});
+
+  w.addEventListener('touchmove',e=>{
+    if(Math.abs(e.touches[0].clientX-sx)>10||Math.abs(e.touches[0].clientY-sy)>10)moved=true;
+  },{passive:true});
+
+  w.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-sx;
+    const dy=e.changedTouches[0].clientY-sy;
+    lastTap=Date.now();
+    if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)){
+      if(fcFlipped)markFC(dx>0); // swipe derecha=sé, izquierda=no sé
+    } else if(!moved){
+      flipFC();
+    }
+    e.preventDefault(); // evita que se dispare también el click
+  },{passive:false});
+
+  // Desktop: click normal
+  w.addEventListener('click',()=>{
+    if(Date.now()-lastTap>400)flipFC();
+  });
+})();
+
+// ── QUIZ ──
+let Qs=[],qi=0,qs=0,qAnswered=false,qMode='normal',tLeft=30,tInt=null,qLastMode='normal';
+
+function buildQs(){
+  const sh=arr(G);
+  return sh.map((item,i)=>{
+    const type=i%2===0?'d2t':'t2d';
+    const others=arr(G.filter(g=>g.t!==item.t)).slice(0,3);
+    let opts,corIdx;
+    if(type==='d2t'){
+      const raw=[item.t,...others.map(o=>o.t)];
+      opts=arr(raw);
+      corIdx=opts.indexOf(item.t);
+    } else {
+      const raw=[item.d,...others.map(o=>o.d)];
+      opts=arr(raw);
+      corIdx=opts.indexOf(item.d);
+    }
+    return{item,type,opts,corIdx};
+  });
+}
+
+function startQuiz(mode){
+  qMode=mode;qLastMode=mode;
+  Qs=buildQs();qi=0;qs=0;qAnswered=false;
+  renderQ();
+  show('s-quiz');
+}
+
+function renderQ(){
+  const q=Qs[qi];
+  const tot=Qs.length;
+  document.getElementById('q-num').textContent=qMode==='speed'?`Pregunta ${qi+1} · ⏱ —`:`Pregunta ${qi+1} de ${tot}`;
+  document.getElementById('q-score').textContent=`${qs} pts`;
+  document.getElementById('q-prog').style.width=((qi+1)/tot*100)+'%';
+
+  if(q.type==='d2t'){
+    document.getElementById('q-lbl').textContent='¿Cuál es el término correcto para esta definición?';
+    document.getElementById('q-txt').textContent=q.item.d;
+  } else {
+    document.getElementById('q-lbl').textContent='¿Cuál es la definición correcta de este término?';
+    document.getElementById('q-txt').textContent=q.item.t;
+  }
+
+  const letters=['A','B','C','D'];
+  const ol=document.getElementById('opts');
+  ol.innerHTML='';
+  const btns=[];
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt';
+    const txt=q.type==='t2d'?trunc(opt,115):opt;
+    btn.innerHTML=`<span class="oltr">${letters[i]}</span>${esc(txt)}`;
+    btns.push(btn);
+    ol.appendChild(btn);
+  });
+  btns.forEach((btn,i)=>btn.onclick=()=>pick(i,q.corIdx,btns));
+
+  document.getElementById('nxt').style.display='none';
+  qAnswered=false;
+
+  if(qMode==='speed'){
+    document.getElementById('timer-wrap').style.display='block';
+    startTimer();
+  } else {
+    document.getElementById('timer-wrap').style.display='none';
+  }
+}
+
+function trunc(s,n){return s.length>n?s.slice(0,n)+'…':s}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function pick(sel,cor,btns){
+  if(qAnswered)return;
+  qAnswered=true;clearTimer();
+  btns.forEach(b=>b.classList.add('done'));
+  if(sel===cor){
+    btns[sel].classList.add('cor');
+    const pts=qMode==='speed'?Math.max(10,tLeft*3):10;
+    qs+=pts;
+    document.getElementById('q-score').textContent=`${qs} pts`;
+  } else {
+    btns[sel].classList.add('wrg');
+    btns[cor].classList.add('cor');
+  }
+  document.getElementById('nxt').style.display='block';
+}
+
+function nextQ(){
+  qi++;
+  if(qi>=Qs.length) showResults();
+  else renderQ();
+}
+
+// ── TIMER ──
+function startTimer(){
+  tLeft=30;clearInterval(tInt);
+  updTimer();
+  tInt=setInterval(()=>{
+    tLeft--;updTimer();
+    if(tLeft<=0){clearTimer();timeUp();}
+  },1000);
+}
+function clearTimer(){clearInterval(tInt)}
+function updTimer(){
+  const pct=tLeft/30*100;
+  const bar=document.getElementById('timer-fill');
+  bar.style.width=pct+'%';
+  bar.style.background=tLeft>15?'#10b981':tLeft>7?'#f59e0b':'#ef4444';
+  if(qMode==='speed')
+    document.getElementById('q-num').textContent=`Pregunta ${qi+1} · ⏱ ${tLeft}s`;
+}
+function timeUp(){
+  if(qAnswered)return;
+  qAnswered=true;
+  const q=Qs[qi];
+  const btns=document.querySelectorAll('.opt');
+  btns.forEach(b=>b.classList.add('done'));
+  btns[q.corIdx].classList.add('cor');
+  document.getElementById('nxt').style.display='block';
+}
+
+// ── RESULTS ──
+function retryQuiz(){startQuiz(qLastMode)}
+
+function showResults(){
+  clearTimer();
+  const tot=Qs.length;
+  let pct=qMode==='normal'
+    ?Math.round(qs/(tot*10)*100)
+    :Math.min(100,Math.round(qs/(tot*30)*100));
+
+  document.getElementById('saving-msg').textContent='💾 Guardando puntaje...';
+  saveScore(pct,qs,qMode);
+
+  document.getElementById('r-pct').textContent=pct+'%';
+  document.getElementById('r-frac').textContent=qMode==='normal'?`${qs/10}/${tot}`:`${qs} pts`;
+  document.getElementById('r-circle').style.setProperty('--deg',Math.round(pct*3.6)+'deg');
+
+  let stars,msg,sub;
+  if(pct>=90){stars='⭐⭐⭐';msg='¡Brillante! 🎉';sub='Dominás el glosario a la perfección'}
+  else if(pct>=70){stars='⭐⭐';msg='¡Muy bien! 👏';sub='Tenés un buen manejo del glosario'}
+  else if(pct>=50){stars='⭐';msg='Bien, podés mejorar';sub='Repasá las flashcards y volvé a intentarlo'}
+  else{stars='💪';msg='Seguí practicando';sub='Las flashcards te van a ayudar a prepararte'}
+
+  document.getElementById('r-stars').textContent=stars;
+  document.getElementById('r-msg').textContent=msg;
+  document.getElementById('r-sub').textContent=sub;
+  show('s-res');
+}
+</script>
+</body>
+</html>
